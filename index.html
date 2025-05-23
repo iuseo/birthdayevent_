@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>잃어버린 선물을 찾아서!</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #1e1e2f;
+      color: #f0e6ff;
+      text-align: center;
+      padding: 20px;
+    }
+    .box {
+      background-color: #2a2a40;
+      border: 2px solid #444;
+      border-radius: 15px;
+      padding: 30px;
+      max-width: 600px;
+      margin: 40px auto;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    }
+    .hidden { display: none; }
+    img { max-width: 150px; margin: 10px; border-radius: 10px; }
+    .question-box { margin-top: 30px; }
+    input {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #888;
+      width: 80%;
+      font-size: 16px;
+      margin-top: 10px;
+      background-color: #1e1e2f;
+      color: #fff;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+      background-color: #9147ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #7a37cc;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 시작 화면 -->
+  <div id="start" class="box">
+    <h1>게임에 참여하시겠습니까?</h1>
+    <button onclick="goToIntro()">YES</button>
+    <button onclick="exitGame()">NO</button>
+  </div>
+
+  <!-- 인트로 화면 -->
+  <div id="intro" class="box hidden">
+    <img src="gift.png" alt="선물 이미지">
+    <img src="character.png" alt="만두 캐릭터">
+    <h1>잃어버린 선물을 찾아서!!</h1>
+    <p>
+      이런!! 인웅이가 선제 생일날 선제 선물을 잃어버렸어요!<br>
+      안녕 나는 선제가 그토록 찾던 아기물만두야!!<br>
+      선제 생일 축하해!!!<br>
+      그런데 문제가 생겼어 ㅠㅠㅠ<br> 
+      멍청한 인웅이가 선제 생일 선물을 잃어버린거야!!<br>
+      인웅이는 선제한테 오늘 22:00시에 선물을 줄 생각이야!!<br>
+      내가 도와줄테니 인웅이가 선물을 주기전에 같이 선물을 찾고<br> 
+      인웅이가 선제한테 선물을 줄 수 있도록 도와주자!!!<br>
+      어디에 선물이 있는지는 내가 힌트를 줄게, 대신 너는 힌트의 답을 나에게 알려줘!<br>
+      인웅이가 선물을 잃어버린 걸 알게되면 더 이상 선물을 안찾을꺼야ㅠㅠ<br>
+      반드시 인웅이 몰래 선물을 찾아야돼!<br>
+      22:00 전에 선물을 찾아보자!
+    </p>
+    <button onclick="startQuiz()">확인</button>
+  </div>
+
+  <!-- 퀴즈 화면 -->
+  <div id="quiz" class="box hidden">
+    <div id="question-container" class="question-box">
+      <p id="question"></p>
+      <input type="text" id="answer" placeholder="정답을 입력하세요">
+      <br>
+      <button onclick="submitAnswer()">확인</button>
+    </div>
+  </div>
+
+  <!-- 결과 화면 -->
+<div id="result" class="box hidden">
+  <h2>🎉 축하해!! 이제 지금까지 정답들을 조합해봐!! 거기에 선물이 있을꺼야. 그 선물을 인웅이 몰래 컴퓨터 옆 옷장에 넣어놓자!</h2>
+  <img src="character2.png" alt="축하하는 만두 캐릭터" style="max-width: 150px; margin-top: 20px; border-radius: 10px;">
+</div>
+
+  <script>
+    const questions = [
+      {
+        q: "일단 어떻게 하는지 연습해보자!! 인웅이 생일과 선제 생일을 알려줘!(ex : 0103)",
+        a: "07210617"
+      },
+      {
+        q: "좋아, 첫번째 힌트야! 선제가 인웅이 차에 맨날 쓰레기 두고 오는 곳을 보면 힌트가 있어!! 그걸 적어줘!",
+        a: "left"
+      },
+      {
+        q: "잘했어!! 인웅이 차 트렁크를 보면 아래 뚜껑을 열 수 있는데 그곳에 써있는 걸 알려줘! 참고로 트렁크는 차키가 있어야 돼!!",
+        a: "T"
+      },
+      {
+        q: "잘했어!! 햇빛은 없지만 태양처럼 뜨겁고, 바람은 없지만 공기가 도는, 비 오는 날의 구세주는?? 힌트는 여기 숨겨져 있어!!",
+        a: "under"
+      },
+      {
+        q: "거의 다왔어!! 인웅이는 운동을 참 많이해. 그래서 운동을 하면 땀이 많이나서 이걸 자주 마셔!! 이걸 인웅이 집에서 찾아보자, 힌트가 적혀있을꺼야!!",
+        a: "V"
+      },
+      {
+        q: "마지막이야!! 음... 근데 나도 마지막 힌트는 어디있는지 잘 모르겠어.... 아 '국가'라는 글자가 써있는 상자를 찾으면 나올수도...!",
+        a: "drawer"
+      }
+    ];
+
+    let currentQuestion = 0;
+
+    function goToIntro() {
+      document.getElementById('start').classList.add('hidden');
+      document.getElementById('intro').classList.remove('hidden');
+    }
+
+    function exitGame() {
+      alert("게임을 종료합니다.");
+      window.close();
+    }
+
+    function startQuiz() {
+      document.getElementById('intro').classList.add('hidden');
+      document.getElementById('quiz').classList.remove('hidden');
+      showQuestion();
+    }
+
+    function showQuestion() {
+      document.getElementById('question').innerText = questions[currentQuestion].q;
+      document.getElementById('answer').value = "";
+    }
+
+    function submitAnswer() {
+      const input = document.getElementById('answer').value.trim();
+      if (input === questions[currentQuestion].a) {
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+          showQuestion();
+        } else {
+          document.getElementById('quiz').classList.add('hidden');
+          document.getElementById('result').classList.remove('hidden');
+        }
+      } else {
+        alert("정답이 아니야!! 다시 알아보자!!.");
+      }
+    }
+  </script>
+</body>
+</html>
